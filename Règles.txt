@@ -1,0 +1,566 @@
+LingVariable E_Angle = new LingVariable("E_Angle", VarType.Input);// en degré
+            E_Angle.setRange(-180, 180);
+            E_Angle.addMF(new Trapmf("LM", -180, -100, -50, -25));
+            E_Angle.addMF(new Trimf("LS", -50, -25, 0));
+            E_Angle.addMF(new Trimf("Z", -5, 0, 5));
+            E_Angle.addMF(new Trimf("RS", 0, 25, 50));
+            E_Angle.addMF(new Trapmf("RM", 25, 50, 100, 180));
+
+            LingVariable E_Distance = new LingVariable("E_Distance", VarType.Input);// en cm
+            E_Distance.setRange(0, 1000);
+            E_Distance.addMF(new Trimf("Z1", 0, 5, 7));
+            E_Distance.addMF(new Trimf("S", 5, 50, 80));
+            E_Distance.addMF(new Trapmf("M", 70, 150, 200, 1000));
+
+            LingVariable Cap1 = new LingVariable("Cap1", VarType.Input);// Front obstacle en cm
+            Cap1.setRange(0, 900);
+            Cap1.addMF(new Trapmf("N1", 0, 20, 30, 50));
+            Cap1.addMF(new Trimf("M1", 40, 60, 90));
+            Cap1.addMF(new Trapmf("F1", 80, 100, 200, 900));
+
+            LingVariable Cap2 = new LingVariable("Cap2", VarType.Input);//  Right Obstacle en cm
+            Cap2.setRange(0, 900);
+            Cap2.addMF(new Trapmf("N2", 0, 20, 30, 50));
+            Cap2.addMF(new Trimf("M2", 40, 60, 90));
+            Cap2.addMF(new Trapmf("F2", 80, 100, 200, 900));
+
+            LingVariable Cap3 = new LingVariable("Cap3", VarType.Input);// Left Obstacle en cm
+            Cap3.setRange(0, 900);
+            Cap3.addMF(new Trapmf("N3", 0, 20, 30, 50));
+            Cap3.addMF(new Trimf("M3", 40, 60, 90));
+            Cap3.addMF(new Trapmf("F3", 80, 100, 200, 900));
+
+            // Outputs ()
+            LingVariable Vd = new LingVariable("Vd", VarType.Output); //en tours/s
+            Vd.setRange(-20, 20);
+
+            Vd.addMF(new Trimf("PS", 0, 5, 10));
+            Vd.addMF(new Trimf("PM", 8, 15, 20));
+            Vd.addMF(new Trimf("PF", 10, 15, 25));
+            Vd.addMF(new Trimf("Z", 0, 0, 0));
+            Vd.addMF(new Trimf("NS", -10, -5, 0));
+            Vd.addMF(new Trimf("NM", -20, -15, -8));
+            Vd.addMF(new Trimf("NM", -25, -15, -10));
+
+            LingVariable Vg = new LingVariable("Vg", VarType.Output); //en tours/s
+            Vg.setRange(-20, 20);
+            Vg.addMF(new Trimf("PS", 0, 5, 10));
+            Vg.addMF(new Trimf("PM", 8, 15, 20));
+            Vg.addMF(new Trimf("PF", 10, 15, 25));
+            Vg.addMF(new Trimf("Z", 0, 0, 0));
+            Vg.addMF(new Trimf("NS", -10, -5, 0));
+            Vg.addMF(new Trimf("NM", -20, -1, -8));
+            Vg.addMF(new Trimf("NM", -20, -15, -10));
+			
+			 //====================1er ligne dans le tableaux des regle===========================================            
+            rule1in.AddRange(new RuleItem[3] { /*new RuleItem("E_Angle", "LM"),*/ new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule1out.AddRange(new RuleItem[2] { new RuleItem("Vd", "Z"), new RuleItem("Vg", "Z") });
+           
+            //====================< obstacle avant et right and distance smalle>============================
+            rule16in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule16out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //2
+            rule17in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule17out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //3
+            rule18in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule18out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //4
+            rule19in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule19out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //5
+            rule20in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule20out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+
+            // ==============================< obstacle avant et right >=========================================
+            //1
+            rule6in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule6out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //2
+            rule7in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule7out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //3
+            rule8in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule8out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //4
+            rule9in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule9out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //5
+            rule10in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule10out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+
+            //================================< obstacle avant et Left and distance smalle>============================================
+            //1
+            rule31in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule31out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //2
+            rule32in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule32out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //3
+            rule33in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule33out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //4
+            rule34in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule34out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //5
+            rule35in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule35out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+
+
+
+            // ============================== < obstacle avant distance smalle>=========================================
+            ///     à MODIFIER 
+            //1
+            rule66in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule66out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PF"), new RuleItem("Vg", "PS") });
+            //2
+            rule67in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule67out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PF"), new RuleItem("Vg", "PS") });
+            //3
+            rule68in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule68out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PF"), new RuleItem("Vg", "PS") });
+            //4
+            rule69in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule69out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") });
+            //5
+            rule70in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule70out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") });
+
+            //1
+            rule11in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule11out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PF"), new RuleItem("Vg", "PS") });
+            //2
+            rule12in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule12out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PF"), new RuleItem("Vg", "PS") });
+            //3
+            rule13in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule13out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") });
+            //4
+            rule14in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule14out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") });
+            //5
+            rule15in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule15out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") });
+
+
+
+            //=============================LIGNE 07 ===========================++++++++++++++++++
+
+            //1
+            rule36in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule36out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") }); 
+            //2
+            rule37in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule37out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") }); //new RuleItem("Vd", "NM"), new RuleItem("Vg", "NS") });
+            //3
+            rule38in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule38out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") }); //new RuleItem("Vd", "NM"), new RuleItem("Vg", "NS") });
+            //4
+            rule39in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule39out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") }); //new RuleItem("Vd", "NM"), new RuleItem("Vg", "NS") });
+            //5
+            rule40in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule40out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") }); //new RuleItem("Vd", "NM"), new RuleItem("Vg", "NS") });
+
+
+            //==========================LIGNE 08===========================================================         
+            //1
+            rule41in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule41out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PF"), new RuleItem("Vg", "PS") });
+            //2
+            rule42in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule42out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PF"), new RuleItem("Vg", "PS") });
+            //3
+            rule43in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule43out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //4
+            rule44in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule44out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") });
+            //5
+            rule45in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule45out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") }); //new RuleItem("Vd", "NM"), new RuleItem("Vg", "PM") });
+
+            //========================= 9eme ligne dans le tableaux des regle ===============================
+            //1
+            rule46in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule46out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PF"), new RuleItem("Vg", "PS") }); //new RuleItem("Vd", "PM"), new RuleItem("Vg", "NM") });
+            //2
+            rule47in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule47out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PF"), new RuleItem("Vg", "PS") }); //new RuleItem("Vd", "PM"), new RuleItem("Vg", "NM") });
+            //3
+            rule48in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule48out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") }); //new RuleItem("Vd", "PS"), new RuleItem("Vg", "NS") });
+            //4
+            rule49in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule49out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") }); //new RuleItem("Vd", "NM"), new RuleItem("Vg", "PM") });
+            //5
+            rule50in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule50out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") }); //new RuleItem("Vd", "NM"), new RuleItem("Vg", "PM") });
+
+            //=============================  10 eme ligne dans le tableaux des regle ===========================
+            //1
+            rule61in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule61out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //2
+            rule62in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule62out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //3
+            rule63in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule63out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //4
+            rule64in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule64out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //5
+            rule65in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule65out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+
+            //=============================  11 eme ligne dans le tableaux des regle ===========================
+            //1
+            rule71in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule71out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //2
+            rule72in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule72out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //3
+            rule73in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule73out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //4
+            rule74in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule74out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //5
+            rule75in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule75out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+
+
+            //============================= 12eme ligne dans le tableaux des regle =========================================
+            //1
+            rule81in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule81out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });// TURN LEFT
+            //2
+            rule82in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule82out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //3
+            rule83in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule83out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //4
+            rule84in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule84out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //5
+            rule85in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule85out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+
+
+            //============================= 13eme ligne dans le tableaux des regle =========================================
+            //1
+            rule86in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule86out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") }); // TURN RIGHT
+            //2
+            rule87in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule87out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //3
+            rule88in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule88out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //4
+            rule89in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule89out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //5
+            rule90in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule90out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+
+            //============================= 14eme ligne dans le tableaux des regle =========================================
+            //1
+            rule76in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule76out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //2
+            rule77in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule77out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //3
+            rule78in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule78out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //4
+            rule79in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule79out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //5
+            rule80in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule80out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+
+
+            //============================= 15 eme ligne dans le tableaux des regle =========================================
+            //1
+            rule21in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "M"), new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule21out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //2
+            rule22in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "M"), new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule22out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //3
+            rule23in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "M"), new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule23out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "NS") });
+            //4
+            rule24in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "M"), new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule24out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //5
+            rule25in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "M"), new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule25out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PF") });
+
+
+            //============================= 16 eme ligne  =========================================
+            //1
+            rule26in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule26out.AddRange(new RuleItem[2] { new RuleItem("Vg", "PM"), new RuleItem("Vd", "PS") });
+            //2
+            rule27in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule27out.AddRange(new RuleItem[2] { new RuleItem("Vg", "PM"), new RuleItem("Vd", "PS") });
+            //3
+            rule28in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule28out.AddRange(new RuleItem[2] { new RuleItem("Vg", "PS"), new RuleItem("Vd", "PS") });
+            //4
+            rule29in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule29out.AddRange(new RuleItem[2] { new RuleItem("Vg", "PM"), new RuleItem("Vd", "PS") });
+            //5
+            rule30in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule30out.AddRange(new RuleItem[2] { new RuleItem("Vg", "PM"), new RuleItem("Vd", "PS") });
+
+
+            //============================= 17 eme ligne  =========================================
+            //1
+            rule146in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule146out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PF"), new RuleItem("Vg", "PM") });
+            //2
+            rule147in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule147out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //3
+            rule148in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule148out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //4
+            rule149in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule149out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //5
+            rule150in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule150out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PF") });
+
+
+            //=================================== 18eme ligne dans le tableaux des regles ==============================        
+            //1  
+            rule91in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule91out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //2
+            rule92in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule92out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //3
+            rule93in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule93out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //4
+            rule94in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule94out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //5
+            rule95in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule95out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+
+
+            //=========================== 22 eme ligne dans le tableaux des regle =========================================        
+            //1
+            rule111in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule111out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //2
+            rule112in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule112out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //3
+            rule113in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule113out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //4
+            rule114in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule114out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //5
+            rule115in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule115out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+
+            //================== 23 eme ligne dans le tableaux des regles ============================================
+            //1
+            rule121in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "M"), new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule121out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") });
+            //2
+            rule122in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "M"), new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule122out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") });
+            //3
+            rule123in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "M"), new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule123out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //4
+            rule124in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "M"), new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule124out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //5
+            rule125in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "M"), new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "N1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule125out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PF") });
+
+            //1
+            rule126in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule126out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //2
+            rule127in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule127out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //3
+            rule128in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule128out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PM") });
+            //4
+            rule129in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule129out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //5
+            rule130in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule130out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+
+
+            //=================== 25 eme ligne dans le tableaux des regle=====================================
+            //1
+            rule136in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule136out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //2
+            rule137in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule137out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //3
+            rule138in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule138out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //4
+            rule139in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule139out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //5
+            rule140in.AddRange(new RuleItem[5] { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule140out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+
+            //1
+            rule141in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule141out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //2
+            rule142in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule142out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //3
+            rule143in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule143out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //4
+            rule144in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule144out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //5
+            rule145in.AddRange(new RuleItem[4] { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule145out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+
+
+            //================================== 24 eme ligne dans le tableaux des regle =======================================  
+            //1
+            rule151in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule151out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") });
+            //2
+            rule152in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule152out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") });
+            //3
+            rule153in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule153out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //4
+            rule154in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule154out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") });
+            //5
+            rule155in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule155out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") });
+
+
+            //================= lIGNE 22 ==============================================================
+            //1
+            rule156in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule156out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") });
+            //2
+            rule157in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule157out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") });
+            //3
+            rule158in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule158out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //4
+            rule159in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule159out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") });
+            //5
+            rule160in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule160out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PF") });
+
+            //============== ligne 21 ===================================================
+            // 1
+            rule116in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule116out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PF"), new RuleItem("Vg", "PS") });
+            //2
+            rule117in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule117out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PF"), new RuleItem("Vg", "PS") });
+            //3
+            rule118in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule118out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //4
+            rule119in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule119out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PF"), new RuleItem("Vg", "PS") });
+            //5
+            rule120in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule120out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PF"), new RuleItem("Vg", "PS") });
+
+            //==================LIGNE 19 ===================================================
+            //1
+            rule106in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule106out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //2
+            rule107in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule107out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //3
+            rule108in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule108out.AddRange(new RuleItem[2] { new RuleItem("Vd", "Ps"), new RuleItem("Vg", "PS") });
+            //4
+            rule109in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule109out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PF"), new RuleItem("Vg", "PS") });
+            //5
+            rule110in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule110out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PF"), new RuleItem("Vg", "PS") });
+
+            // ========lignE 18=======================
+            //1
+            rule131in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule131out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //2
+            rule132in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule132out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //3
+            rule133in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule133out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //4
+            rule134in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule134out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //5
+            rule135in.AddRange(new RuleItem[4]  { new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "N2"), new RuleItem("Cap3", "N3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule135out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+
+            //====================== LA DERNI7RE LIGNE = CONVERGENCE VERS LA CIBLE:      ++<PAS D OBSTACLES>++
+            //1
+            rule96in.AddRange(new RuleItem[5]  { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule96out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //2
+            rule97in.AddRange(new RuleItem[5]  { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule97out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //3
+            rule98in.AddRange(new RuleItem[5]  { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule98out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //4
+            rule99in.AddRange(new RuleItem[5]  { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule99out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //5
+            rule100in.AddRange(new RuleItem[5]  { new RuleItem("E_Distance", "S"), new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "F1"), new RuleItem("Cap2", "F2"), new RuleItem("Cap3", "F3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule100out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+
+            //1
+            rule101in.AddRange(new RuleItem[5]  { new RuleItem("E_Distance", "M"), new RuleItem("E_Angle", "LM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule101out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //2
+            rule102in.AddRange(new RuleItem[5]  { new RuleItem("E_Distance", "M"), new RuleItem("E_Angle", "LS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule102out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PM"), new RuleItem("Vg", "PS") });
+            //3
+            rule103in.AddRange(new RuleItem[5]  { new RuleItem("E_Distance", "M"), new RuleItem("E_Angle", "Z"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule103out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PS") });
+            //4
+            rule104in.AddRange(new RuleItem[5]  { new RuleItem("E_Distance", "M"), new RuleItem("E_Angle", "RS"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule104out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+            //5
+            rule105in.AddRange(new RuleItem[5]  { new RuleItem("E_Distance", "M"), new RuleItem("E_Angle", "RM"), new RuleItem("Cap1", "M1"), new RuleItem("Cap2", "M2"), new RuleItem("Cap3", "M3") }); // pas d'obstacles et cible loi avec E_angle =0
+            rule105out.AddRange(new RuleItem[2] { new RuleItem("Vd", "PS"), new RuleItem("Vg", "PM") });
+
+            rule165in.AddRange(new RuleItem[1]  { new RuleItem("E_Distance", "Z1")}); // pas d'obstacles et cible loi avec E_angle =0
+            rule165out.AddRange(new RuleItem[2] { new RuleItem("Vd", "Z"), new RuleItem("Vg", "Z") });
+
